@@ -3,12 +3,14 @@ import os
 
 from whoosh import index
 
+import sygil_authy
+
 from .config.db.Model import Options
 
 if not os.path.exists("db"):
     os.mkdir("db")
 
-module_name = "sygil_authy"
+module_name = sygil_authy
 
 APP_ID = f"sygil_authy.Sygil-Dev.version.{module_name.__version__}"
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_ID)
