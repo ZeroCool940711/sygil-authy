@@ -1,0 +1,27 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.envFile": "${workspaceFolder}/.env"
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Run NiceGUI",
+				"type": "debugpy",
+				"request": "launch",
+				"program": "src/sygil_authy/main.py",
+				"env": {
+					"PYDEVD_DISABLE_FILE_VALIDATION": "1",
+					"PYDEVD_USE_CYTHON": "YES",
+					"PYDEVD_CYTHONIZE": "YES",
+					"PYDEVD_CYTHONIZE_THRESHOLD": "0",
+				}
+			}
+		]
+	}
+}

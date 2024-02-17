@@ -1,0 +1,25 @@
+{
+  "template": "https://github.com/ZeroCool940711/cookiecutter-python-template",
+  "commit": "master",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "full_name": "Alejandro Gil",
+      "company_name": "Sygil-Dev",
+      "email": "alejandrogilelias940711@gmail.com",
+      "project_name": "Sygil Authy",
+      "project_slug": "sygil-authy",
+      "module_name": "sygil_authy",
+      "project_short_description": "Elevate your online security with Sygil Authy, a robust and user-friendly 2FA application.",
+      "package_manager": "pip",
+      "use_notebooks": "no",
+      "use_docker": "no",
+      "ci_pipeline": "none",
+      "create_cli": "no",
+      "config_file": "none",
+      "code_formatter": "black",
+      "editor_settings": "vscode",
+      "_template": "https://github.com/ZeroCool940711/cookiecutter-python-template"
+    }
+  }
+}
