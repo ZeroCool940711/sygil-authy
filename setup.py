@@ -24,7 +24,7 @@ setup(
     package_dir={"": "src"},
     package_data={"sygil_authy": ["res/*"]},
     long_description=read("README.md"),
-    install_requires=[],
+    install_requires=["pyotp", "qrcode", "Pillow"],
     tests_require=[
         "pytest",
         "pytest-cov",
