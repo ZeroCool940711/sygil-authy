@@ -1,11 +1,11 @@
 import os
-from runpy import run_path
 
 from setuptools import find_packages, setup
 
 # read the program version from version.py (without loading the module)
-#__version__ = run_path('src/sygil_authy/version.py')['__version__']
+# __version__ = run_path('src/sygil_authy/version.py')['__version__']
 from src.sygil_authy import __version__
+
 
 def read(fname):
     """Utility function to read the README file."""
@@ -22,14 +22,14 @@ setup(
     url="",
     packages=find_packages("src"),
     package_dir={"": "src"},
-    package_data={'sygil_authy': ['res/*']},
-    long_description=read('README.md'),
+    package_data={"sygil_authy": ["res/*"]},
+    long_description=read("README.md"),
     install_requires=[],
     tests_require=[
-        'pytest',
-        'pytest-cov',
-        'pre-commit',
+        "pytest",
+        "pytest-cov",
+        "pre-commit",
     ],
-    platforms='any',
-    python_requires='>=3.8',
+    platforms="any",
+    python_requires=">=3.8",
 )
