@@ -5,3 +5,5 @@ pyotp
 qrcode
 Pillow
 git+https://github.com/Sygil-Dev/whoosh-reloaded.git
+git+https://github.com/ZeroCool940711/nicegui.git@dev
+pywebview
