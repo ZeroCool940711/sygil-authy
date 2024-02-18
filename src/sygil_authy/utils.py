@@ -5,7 +5,7 @@ from whoosh import index
 
 import sygil_authy
 
-from .config.db.Model import Options
+from .config.db.Model import Account, Options
 
 if not os.path.exists("db"):
     os.mkdir("db")
@@ -87,6 +87,22 @@ def check_if_index_exists(dirname, indexname):
     return index.exists_in(dirname, indexname=indexname)
 
 
+def make_account_index():
+    ix = create_index(Account(), "accounts")
+    return ix
+
+
+def add_account(account):
+    if check_if_index_exists("db", "accounts"):
+        ix = index.open_dir("db", indexname="accounts", schema=Account)
+    else:
+        ix = make_account_index()
+
+    writer = ix.writer()
+    writer.add_document(**account)
+    writer.commit(merge=True, optimize=True)
+
+
 def set_default_config(reset=False):
     """
     Set default config for the app. We will use this to create the index for the first time.
@@ -109,6 +125,7 @@ def set_default_config(reset=False):
 
     writer = ix.writer()
     writer.add_document(**defaults)
+
     writer.commit(merge=True, optimize=True)
 
 
