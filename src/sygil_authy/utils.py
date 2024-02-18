@@ -17,6 +17,24 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_ID)
 
 
 def set_icon(icon_path="src/sygil_authy/assets/icon.ico"):
+    """
+    Sets the icon of the foreground window.
+
+    Args:
+        icon_path (str, optional): The path to the icon file. Defaults to "src/sygil_authy/assets/icon.ico".
+
+    Raises:
+        FileNotFoundError: If the specified icon file is not found.
+
+    Notes:
+        - This function is specific to Windows operating system.
+        - The icon file should be in .ico format.
+        - The function sets both the small and big icons of the foreground window.
+
+    Usage:
+        - Call this function to set the icon of the foreground window.
+        - If no icon_path is provided, it will default to "src/sygil_authy/assets/icon.ico".
+    """
     user32 = ctypes.windll.user32
     hwnd = user32.GetForegroundWindow()
     ICON_SMALL = 0
@@ -29,11 +47,23 @@ def set_icon(icon_path="src/sygil_authy/assets/icon.ico"):
         hinst, os.path.abspath(icon_path), 1, 0, 0, LR_LOADFROMFILE
     )
 
+    if hicon == 0:
+        raise FileNotFoundError(f"Icon file not found: {icon_path}")
+
     user32.SendMessageW(hwnd, WM_SETICON, ICON_SMALL, hicon)
     user32.SendMessageW(hwnd, WM_SETICON, ICON_BIG, hicon)
 
 
 def first_run():
+    """
+    Checks if the index 'options' exists in the 'db' database. If the index does not exist,
+    it sets the default configuration by calling the 'set_default_config()' function and
+    returns True. Otherwise, it returns False.
+
+    Returns:
+        bool: True if the index 'options' does not exist and the default configuration is set,
+              False otherwise.
+    """
     if not check_if_index_exists("db", "options"):
         set_default_config()
         return True
