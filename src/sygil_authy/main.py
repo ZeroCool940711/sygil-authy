@@ -7,12 +7,6 @@ from sygil_authy.utils import first_run, get_options, set_icon
 
 app.native.window_args["resizable"] = False
 
-first_run()
-
-set_icon()
-
-options = get_options()
-
 totp = pyotp.TOTP(
     "DIDZC3PYR62GLMVKXGEPNTYMVSOI72YNUQYRHNP7BIMVNWAMWKJNB4JC7AHMAEXOB5IVYPENON46AKGSQTFSY234U6XBLWOVCDAHRZI"
 )
@@ -89,6 +83,11 @@ def main():
 
 
 if __name__ in {"__main__", "__mp_main__"}:
+    first_run()
+    set_icon()
+
+    options = get_options()
+
     ui.run(
         port=5000,
         title=options["app_title"],
