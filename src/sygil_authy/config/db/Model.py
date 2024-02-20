@@ -1,4 +1,4 @@
-from whoosh.fields import BOOLEAN, ID, NUMERIC, TEXT, SchemaClass
+from whoosh.fields import BOOLEAN, DATETIME, ID, NUMERIC, TEXT, SchemaClass
 
 
 class Options(SchemaClass):
@@ -58,20 +58,18 @@ class Account(SchemaClass):
 
     id = ID(stored=True, unique=True)
     secret = TEXT(stored=True)
-    name = TEXT(stored=True)
-    alias = TEXT(stored=True)
-    icon = TEXT(stored=True)
-    issuer = TEXT(stored=True)
-    label = TEXT(stored=True)
-    algorithm = TEXT(stored=True)
-    digits = NUMERIC(stored=True)
-    type = TEXT(stored=True)
-    website = TEXT(stored=True)
-    counter = NUMERIC(stored=True)
-    username = TEXT(stored=True)
-    recovery_code = TEXT(stored=True)
-    backup_codes = TEXT(stored=True)
-    last_used = NUMERIC(stored=True)
+    name = TEXT(stored=True, spelling=True, sortable=True)
+    alias = TEXT(stored=True, spelling=True, sortable=True)
+    icon = TEXT(stored=True, spelling=True, sortable=True)
+    issuer = TEXT(stored=True, spelling=True, sortable=True)
+    label = TEXT(stored=True, spelling=True, sortable=True)
+    algorithm = TEXT(stored=True, spelling=True, sortable=True)
+    digits = NUMERIC(stored=True, sortable=True)
+    type = TEXT(stored=True, spelling=True, sortable=True)
+    website = TEXT(stored=True, spelling=True, sortable=True)
+    counter = NUMERIC(stored=True, sortable=True)
+    username = TEXT(stored=True, spelling=True, sortable=True)
+    last_used = DATETIME(stored=True, sortable=True)
     is_active = BOOLEAN(stored=True)
     is_password_protected = BOOLEAN(stored=True)
-    password = TEXT(stored=True)
+    password = TEXT(stored=True, spelling=True, sortable=True)

@@ -3,6 +3,7 @@ import os
 
 from whoosh import index
 from whoosh.fields import Schema
+from whoosh.qparser import QueryParser
 
 import sygil_authy
 
@@ -65,8 +66,11 @@ def first_run() -> bool:
         bool: True if the index 'options' does not exist and the default configuration is set,
               False otherwise.
     """
-    if not check_if_index_exists("db", "options"):
+    if not check_if_index_exists("db", "options") or not check_if_index_exists(
+        "db", "accounts"
+    ):
         set_default_config()
+        make_account_index()
         return True
     else:
         return False
@@ -143,7 +147,10 @@ def make_account_index() -> index.Index:
     Returns:
         index.Index: An instance of the index.Index class.
     """
-    ix = create_index(Account(), "accounts")
+    if check_if_index_exists("db", "accounts"):
+        ix = index.open_dir("db", indexname="accounts", schema=Account)
+    else:
+        ix = create_index(Account(), "accounts")
     return ix
 
 
@@ -221,18 +228,29 @@ def update_account(account: dict) -> None:
     writer.commit(merge=True, optimize=True)
 
 
-def search_accounts(query, last_version=True):
+def search_accounts_by_name(name: str) -> list:
+    ix = index.open_dir("db", indexname="accounts", schema=Account)
+
+    print(name)
+
+    qp = QueryParser("name", schema=ix.schema)
+    q = qp.parse(name)
+
+    searcher = ix.searcher()
+    results = searcher.search(q)
+
+    # print(results)
+
+    return list(results)
+
+
+def get_all_accounts(last_version=True):
     ix = index.open_dir("db", indexname="accounts", schema=Account)
 
     with ix.searcher() as searcher:
-        results = searcher.documents(**query)
-        if last_version:
-            # return last version only
-            for result in results:
-                return result
-        else:
-            # return all versions/backups
-            return list(results)
+        results = searcher.documents()
+
+        return list(results)
 
 
 def set_default_config(reset=False):
