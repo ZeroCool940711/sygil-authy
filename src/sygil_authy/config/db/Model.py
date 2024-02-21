@@ -1,4 +1,7 @@
+from whoosh.analysis import StemmingAnalyzer
 from whoosh.fields import BOOLEAN, DATETIME, ID, NUMERIC, TEXT, SchemaClass
+
+analyzer = StemmingAnalyzer(stoplist=None)
 
 
 class Options(SchemaClass):
@@ -58,18 +61,18 @@ class Account(SchemaClass):
 
     # id = ID(stored=True, unique=True)
     secret = ID(stored=True, unique=True, sortable=True)
-    name = TEXT(stored=True, spelling=True, sortable=True)
-    alias = TEXT(stored=True, spelling=True, sortable=True)
-    icon = TEXT(stored=True, spelling=True, sortable=True)
-    issuer = TEXT(stored=True, spelling=True, sortable=True)
-    label = TEXT(stored=True, spelling=True, sortable=True)
-    algorithm = TEXT(stored=True, spelling=True, sortable=True)
+    name = TEXT(analyzer=analyzer, stored=True, sortable=True)
+    alias = TEXT(analyzer=analyzer, stored=True, sortable=True)
+    icon = TEXT(stored=True, sortable=True)
+    issuer = TEXT(analyzer=analyzer, stored=True, sortable=True)
+    label = TEXT(analyzer=analyzer, stored=True, sortable=True)
+    algorithm = TEXT(stored=True, sortable=True)
     digits = NUMERIC(stored=True, sortable=True)
-    type = TEXT(stored=True, spelling=True, sortable=True)
-    website = TEXT(stored=True, spelling=True, sortable=True)
+    type = TEXT(analyzer=analyzer, stored=True, sortable=True)
+    website = TEXT(analyzer=analyzer, stored=True, sortable=True)
     counter = NUMERIC(stored=True, sortable=True)
-    username = TEXT(stored=True, spelling=True, sortable=True)
+    username = TEXT(analyzer=analyzer, stored=True, sortable=True)
     last_used = DATETIME(stored=True, sortable=True)
     is_active = BOOLEAN(stored=True)
     is_password_protected = BOOLEAN(stored=True)
-    password = TEXT(stored=True, spelling=True, sortable=True)
+    password = TEXT(stored=True, sortable=True)
