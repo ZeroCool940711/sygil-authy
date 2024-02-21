@@ -21,6 +21,18 @@
 					"PYDEVD_CYTHONIZE": "YES",
 					"PYDEVD_CYTHONIZE_THRESHOLD": "0",
 				}
+			},
+			{
+				"name": "Run file",
+				"type": "debugpy",
+				"request": "launch",
+				"program": "${file}",
+				"env": {
+					"PYDEVD_DISABLE_FILE_VALIDATION": "1",
+					"PYDEVD_USE_CYTHON": "YES",
+					"PYDEVD_CYTHONIZE": "YES",
+					"PYDEVD_CYTHONIZE_THRESHOLD": "0",
+				}
 			}
 		]
 	}
