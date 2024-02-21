@@ -3,11 +3,10 @@ import os
 
 from whoosh import index
 from whoosh.fields import Schema
-from whoosh.qparser import QueryParser
+from whoosh.qparser import FuzzyTermPlugin, MultifieldParser, QueryParser
 
 import sygil_authy
-
-from .config.db.Model import Account, Options
+from sygil_authy.config.db.Model import Account, Options
 
 if not os.path.exists("db"):
     os.mkdir("db")
@@ -192,32 +191,10 @@ def add_account(account: dict) -> None:
     writer.commit(merge=True, optimize=True)
 
 
-def delete_account(account_id: int) -> None:
-    """
-    Delete an account from the database.
-
-    Args:
-        account_id (int): The ID of the account to be deleted.
-
-    Returns:
-        None
-
-    Raises:
-        None
-
-    Notes:
-        This function deletes an account from the database by performing the following steps:
-        1. Open the index directory named "db" with the schema defined as Account.
-        2. Create a writer object to perform write operations on the index.
-        3. Delete the account with the specified account_id by using the "delete_by_term" method of the writer.
-        4. Commit the changes made by the writer to the index, merging and optimizing the index.
-
-    Example:
-        delete_account(123)  # Delete the account with ID 123 from the database.
-    """
+def delete_account(secret: str) -> None:
     ix = index.open_dir("db", indexname="accounts", schema=Account)
     writer = ix.writer()
-    writer.delete_by_term("id", account_id)
+    writer.delete_by_term("secret", secret)
     writer.commit(merge=True, optimize=True)
 
 
@@ -225,23 +202,26 @@ def update_account(account: dict) -> None:
     ix = index.open_dir("db", indexname="accounts", schema=Account)
     writer = ix.writer()
     writer.update_document(**account)
-    writer.commit()
+    writer.commit(merge=True, optimize=True)
 
 
 def search_accounts_by_name(name: str) -> list:
     ix = index.open_dir("db", indexname="accounts", schema=Account)
+    query = MultifieldParser(
+        ["name", "alias", "issuer", "website", "username"], ix.schema
+    )
 
-    print(name)
+    query.add_plugin(FuzzyTermPlugin())
 
-    qp = QueryParser("name", schema=ix.schema)
-    q = qp.parse(name)
+    q = query.parse(name)
 
     searcher = ix.searcher()
-    results = searcher.search(q)
-
-    # print(results)
+    results = searcher.search(q, terms=True)
 
     return list(results)
+
+
+# print(search_accounts_by_name("test"))
 
 
 def get_all_accounts(last_version=True):
