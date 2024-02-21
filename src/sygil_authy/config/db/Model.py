@@ -56,8 +56,8 @@ class Account(SchemaClass):
         password (str): The password associated with the account.
     """
 
-    id = ID(stored=True, unique=True)
-    secret = TEXT(stored=True)
+    # id = ID(stored=True, unique=True)
+    secret = ID(stored=True, unique=True, sortable=True)
     name = TEXT(stored=True, spelling=True, sortable=True)
     alias = TEXT(stored=True, spelling=True, sortable=True)
     icon = TEXT(stored=True, spelling=True, sortable=True)

@@ -225,7 +225,7 @@ def update_account(account: dict) -> None:
     ix = index.open_dir("db", indexname="accounts", schema=Account)
     writer = ix.writer()
     writer.update_document(**account)
-    writer.commit(merge=True, optimize=True)
+    writer.commit()
 
 
 def search_accounts_by_name(name: str) -> list:

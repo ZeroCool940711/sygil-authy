@@ -7,13 +7,13 @@ from nicegui import app, color, icon, ui
 
 from sygil_authy.utils import (
     add_account,
+    delete_account,
     first_run,
     get_all_accounts,
     get_options,
-    # update_account,
-    # delete_account,
     search_accounts_by_name,
     set_icon,
+    update_account,
 )
 
 app.native.window_args["resizable"] = False
@@ -107,12 +107,15 @@ def add_account_page():
 
 
 def save_account_and_open(name: str, account_info_dict: dict):
-    add_account(account_info_dict)
-    ui.open(f"/account/{name}")
+    # try:
+    update_account(account_info_dict)
+
+    # add_account(account_info_dict)
+    ui.open(f"/account/{account_info_dict['name']}")
 
 
 @ui.page("/account/{name}/edit")
-def account_info(name: str = "New Account", secret=None):
+def account_info(secret, name: str = "New Account"):
     print(name)
     with ui.card().style("height: 585px"):
         with ui.column().style("height: 100%"):
@@ -123,12 +126,16 @@ def account_info(name: str = "New Account", secret=None):
                 ui.label(f"Edit {name}").tailwind().font_size("2xl").align_self(
                     "center"
                 ).align_self("end")
-                ui.button(
-                    "Save",
-                    on_click=lambda e: save_account_and_open(
-                        account_name.value, account_info_dict
-                    ),
-                ).tailwind().background_color(color.GREEN)
+                save = (
+                    ui.button(
+                        "Save",
+                        on_click=lambda: save_account_and_open(
+                            account_info_dict["name"], account_info_dict
+                        ),
+                    )
+                    .tailwind()
+                    .background_color(color.GREEN)
+                )
 
             with ui.scroll_area().style("height: 80%"):
                 with ui.column().style("width: 100%"):
@@ -194,6 +201,7 @@ def account_info(name: str = "New Account", secret=None):
                     )
 
                     account_info_dict = {
+                        "secret": secret,
                         "name": account_name.value,
                         "alias": alias.value,
                         "icon": account_icon.value,
@@ -243,10 +251,12 @@ def account(name: str):
                 ui.button(
                     icon=icon.ARROW_BACK, on_click=lambda e: ui.back()
                 ).tailwind().background_color(color.TRANSPARENT)
-                ui.label(name).tailwind().font_size("2xl")
+                ui.label(account_information["name"]).tailwind().font_size("2xl")
                 ui.button(
                     icon=icon.EDIT,
-                    on_click=lambda name=name: ui.open(f"/account/{name}-{None}/edit"),
+                    on_click=lambda name=account_information["name"]: ui.open(
+                        f"/account/{account_information['name']}/edit?secret={account_information['secret']}"
+                    ),
                 ).tailwind().background_color(color.TRANSPARENT)
 
             with ui.scroll_area().style("height: 80%"):
@@ -258,6 +268,8 @@ def account(name: str):
 
 @ui.page("/")
 def main():
+    results = []
+
     with ui.card().style("height: 585px"):
         with ui.column().style("height: 100%"):
             with ui.row().style("width: 100%").style(
@@ -265,7 +277,9 @@ def main():
             ):
                 search_bar = ui.input(
                     placeholder="Search",
-                    on_change=lambda e: search_accounts_by_name(e.value),
+                    on_change=lambda e: results.extend(
+                        search_accounts_by_name(e.value)
+                    ),
                 ).style("width: 80%; height: 20%")
 
                 add = ui.button(
@@ -275,12 +289,10 @@ def main():
                     on_click=lambda e: ui.open("/add"),
                 ).style(f"width: 10%; {ui.Style(alignment=ui.alignment.center)}")
 
-            with ui.scroll_area().style("height: 80%").bind_visibility_from(search_bar):
+            with ui.scroll_area().style("height: 80%"):
                 # for i in range(10):
-                if search_bar.value or get_all_accounts():
-                    for account in (
-                        search_accounts_by_name(search_bar.value) or get_all_accounts()
-                    ):
+                if results or get_all_accounts():
+                    for account in results or get_all_accounts():
                         if account:
                             with ui.list().props("bordered separator").style(
                                 "width: 100%; align-items: end; padding: 0; margin: 0; gap: 0;"
