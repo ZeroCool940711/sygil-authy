@@ -33,7 +33,14 @@ def nav_bar():
         ui.button("Accounts", icon=icon.LOCK, on_click=lambda e: ui.open("/")).style(
             "width: 33%"
         )
-        ui.button("Requests", icon=icon.CHECK_CIRCLE).style("width: 33%")
+        ui.button(
+            "Requests",
+            icon=icon.CHECK_CIRCLE,
+            on_click=lambda e: ui.notify(
+                "This feature is not yet implemented",
+                close_button=True,
+            ),
+        ).style("width: 33%")
         ui.button(
             "Settings",
             icon=icon.SETTINGS,
