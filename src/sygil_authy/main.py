@@ -380,7 +380,7 @@ def account(name: str):
                                     otp.update(
                                         progress_value=otp["progress_value"] - 1
                                         if otp["progress_value"] > 0
-                                        else account_information["counter"],
+                                        else account_information["counter"] - 1,
                                     ),
                                     otp.update(value=totp.now()),
                                 ],
@@ -390,22 +390,13 @@ def account(name: str):
                         ui.label("Expires in:").tailwind().font_size("lg").align_self(
                             "center"
                         )
-                        progress_bar = ui.circular_progress(
-                            value=(
-                                otp["progress_value"] / account_information["counter"]
-                            )
-                            % 1.0,
-                            show_value=False,
-                        ).bind_value(timer, "value")
-
-                        with progress_bar:
-                            ui.label(
-                                totp.interval
-                                - datetime.datetime.now(
-                                    datetime.timezone.utc
-                                ).timestamp()
-                                % totp.interval
-                            ).bind_text_from(otp, "progress_value")
+                        ui.circular_progress(
+                            value=otp["progress_value"],
+                            max=account_information["counter"],
+                        ).bind_value_from(
+                            otp,
+                            "progress_value",
+                        )
 
                         ui.label("Seconds").tailwind().font_size("lg").align_self(
                             "center"
@@ -538,9 +529,9 @@ def main():
                                     with ui.item_section().props("avatar"):
                                         ui.icon(
                                             icon.KEY,
-                                            color=random.choice(
-                                                list(vars(color).values())
-                                            ),
+                                            # color=random.choice(
+                                            #     list(vars(color).values())
+                                            # ),
                                         )
                                     with ui.item_section():
                                         ui.item_label(
