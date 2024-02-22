@@ -374,7 +374,7 @@ def account(name: str):
                                 "cursor: pointer; font-size: 5rem;"
                             )
 
-                            timer = ui.timer(
+                            ui.timer(
                                 1,
                                 lambda: [
                                     otp.update(
@@ -393,6 +393,8 @@ def account(name: str):
                         ui.circular_progress(
                             value=otp["progress_value"],
                             max=account_information["counter"],
+                            reverse=True,
+                            rounded=True,
                         ).bind_value_from(
                             otp,
                             "progress_value",
