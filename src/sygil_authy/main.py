@@ -316,7 +316,7 @@ def delete_dialogue(account_info_dict: dict):
 
 
 def copy_to_clipboard(text: str):
-    ui.copy_to_clipboard(text)
+    ui.clipboard.writeText(text)
     ui.notify(f"Copied {text} to clipboard", color=color.GREEN)
 
 
@@ -433,9 +433,7 @@ def account(name: str):
                         ui.space()
                         ui.button(
                             icon=icon.COPY_ALL,
-                            on_click=lambda e: copy_to_clipboard(
-                                totp.at(otp["progress_value"])
-                            ),
+                            on_click=lambda e: copy_to_clipboard(otp["value"]),
                         ).tailwind().background_color(color.GREEN)
 
             # add our nav bar
