@@ -138,11 +138,13 @@ def account_info(
         _ = account_info_dict["counter"]
         _ = account_info_dict["is_active"]
         _ = account_info_dict["is_password_protected"]
+        _ = account_info_dict["color"]
     except KeyError:
         account_info_dict["type"] = otp_type
         account_info_dict["counter"] = 30
         account_info_dict["is_active"] = True
         account_info_dict["is_password_protected"] = False
+        account_info_dict["color"] = "#211b1b"
 
     account_info_dict["secret"] = secret
     account_info_dict["password"] = password
@@ -150,7 +152,9 @@ def account_info(
 
     logger.debug(f"Account Info Dict: {account_info_dict}")
 
-    with ui.card().style("height: 585px"):
+    with ui.card().style(
+        f"height: 585px; background-color: {account_info_dict['color']}"
+    ):
         with ui.column().style("height: 100%"):
             with ui.row().style("width: 100%").classes("flex justify-between"):
                 ui.button(
@@ -185,6 +189,13 @@ def account_info(
                         label="Icon",
                         on_change=lambda e: account_info_dict.update(icon=e.value),
                     ).style("width: 100%").bind_value(account_info_dict, "icon")
+
+                    ui.color_input(
+                        "Color",
+                        value=account_info_dict["color"],
+                        preview=True,
+                        on_change=lambda e: account_info_dict.update(color=e.value),
+                    ).style("width: 100%").bind_value(account_info_dict, "color")
 
                     ui.input(
                         label="Website",
@@ -319,9 +330,16 @@ def account(name: str):
     except IndexError:
         account_information = search_accounts_by_name(name)
 
+    try:
+        account_information["color"]
+    except KeyError:
+        dict(account_information).update({"color": "#211b1b"})
+
     logger.debug(f"Account Information: {account_information}")
 
-    with ui.card().style("height: 585px"):
+    with ui.card().style(
+        f"height: 585px; background-color: {account_information['color']}"
+    ):
         with ui.column().style("height: 100%"):
             with ui.row().style("width: 100%;").classes("flex justify-between"):
                 ui.button(
@@ -340,8 +358,8 @@ def account(name: str):
                     with ui.row().style("width: 100%;").classes("flex justify-center"):
                         ui.space()
                         if account_information["icon"]:
-                            ui.icon(
-                                icon=account_information["icon"]
+                            ui.icon(icon=account_information["icon"]).style(
+                                "border-radius: 50%; border: 2px solid grey;"
                             ).tailwind().font_size("6xl")
                         else:
                             ui.icon(icon.KEY).style(
@@ -538,9 +556,7 @@ def main():
                                     with ui.item_section().props("avatar"):
                                         ui.icon(
                                             icon.KEY,
-                                            # color=random.choice(
-                                            #     list(vars(color).values())
-                                            # ),
+                                            color=account["color"],
                                         )
                                     with ui.item_section():
                                         ui.item_label(
