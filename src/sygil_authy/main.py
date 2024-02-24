@@ -68,7 +68,7 @@ def add_account_page():
         with ui.column().style("height: 100%"):
             with ui.row().style("width: 100%"):
                 ui.button(
-                    icon=icon.ARROW_BACK, on_click=lambda e: ui.back()
+                    icon=icon.ARROW_BACK, on_click=lambda e: ui.navigate.back()
                 ).tailwind().background_color("transparent")
                 ui.label("Add Account").tailwind().font_size("2xl").align_self("center")
             with ui.scroll_area().style("height: 80%"):
@@ -158,7 +158,7 @@ def account_info(
         with ui.column().style("height: 100%"):
             with ui.row().style("width: 100%").classes("flex justify-between"):
                 ui.button(
-                    icon=icon.ARROW_BACK, on_click=lambda e: ui.back()
+                    icon=icon.ARROW_BACK, on_click=lambda e: ui.navigate.back()
                 ).tailwind().background_color(color.TRANSPARENT)
 
                 ui.label().bind_text_from(
@@ -343,7 +343,7 @@ def account(name: str):
         with ui.column().style("height: 100%"):
             with ui.row().style("width: 100%;").classes("flex justify-between"):
                 ui.button(
-                    icon=icon.ARROW_BACK, on_click=lambda e: ui.back()
+                    icon=icon.ARROW_BACK, on_click=lambda e: ui.navigate.back()
                 ).tailwind().background_color(color.TRANSPARENT)
                 ui.label(account_information["name"]).tailwind().font_size("2xl")
                 ui.button(
