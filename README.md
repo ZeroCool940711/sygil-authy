@@ -14,6 +14,14 @@ With the second command, you'll get an editable installation of the module, so t
 
 You can now import functions and classes from the module with `import sygil_authy`.
 
+
+## Running the Application
+
+To run launch the main.py file with the following command:
+
+    python src/sygil_authy/main.py
+
+
 ### Testing
 
 We use `pytest` as test framework. To execute the tests, please run
