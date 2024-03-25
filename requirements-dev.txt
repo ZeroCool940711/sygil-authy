@@ -4,7 +4,7 @@
 black~=24.3
 pre-commit~=3.7
 pytest~=8.1
-pytest-cov~=4.1
+pytest-cov~=5.0
 wheel~=0.43
 cruft
 versioneer
