@@ -2,7 +2,7 @@
 # with this project (e.g. for testing or useful development tools).
 # The regular project dependencies are defined in requirements.txt
 black~=25.11
-pre-commit~=4.3
+pre-commit~=4.5
 pytest~=8.4
 pytest-cov~=7.0
 wheel~=0.45
