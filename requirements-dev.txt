@@ -1,7 +1,7 @@
 # This file defines the additional requirements for a developer working
 # with this project (e.g. for testing or useful development tools).
 # The regular project dependencies are defined in requirements.txt
-black~=26.5
+black~=26.10
 pre-commit~=4.6
 pytest~=9.1
 pytest-cov~=7.1
