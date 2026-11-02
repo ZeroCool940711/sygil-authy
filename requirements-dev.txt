@@ -3,7 +3,7 @@
 # The regular project dependencies are defined in requirements.txt
 black~=26.10
 pre-commit~=4.6
-pytest~=9.1
+pytest~=9.2
 pytest-cov~=7.1
 wheel~=0.48
 cruft
